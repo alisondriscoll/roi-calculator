@@ -38,6 +38,16 @@
   header h1{margin:0 0 4px 0; font-size:1.6rem;}
   header p{margin:0; opacity:.85; font-size:.95rem; max-width:760px;}
   .header-row{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;}
+  .header-right{display:flex; flex-direction:column; align-items:flex-end; gap:12px;}
+  .logo{
+    height:30px;
+    width:auto;
+    display:block;
+    background:#fff;
+    padding:7px 14px;
+    border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,.15);
+  }
   .presets{display:flex; gap:8px; flex-wrap:wrap;}
   .btn{
     border:1px solid rgba(255,255,255,.5);
@@ -239,8 +249,8 @@
     display:flex; gap:14px; flex-wrap:wrap; margin-top:6px;
   }
   .roi-box .roi-item{flex:1; min-width:140px;}
-  .roi-box .roi-item .value{font-size:1.2rem; font-weight:700; color:var(--navy);}
-  .roi-box .roi-item .label{font-size:.72rem; color:var(--muted); text-transform:uppercase;}
+  .roi-box .roi-item .value{font-size:1.2rem; font-weight:700; color:#ffffff;}
+  .roi-box .roi-item .label{font-size:.72rem; color:#cfe0f5; text-transform:uppercase;}
 
   @media print{
     header .presets, .no-print{display:none !important;}
@@ -262,11 +272,14 @@
         <span><span class="dot assumption"></span>ProFinda suggested assumption</span>
       </div>
     </div>
-    <div class="presets no-print">
-      <button class="btn primary" onclick="loadPreset('big4')">Big 4 Case Study</button>
-      <button class="btn primary" onclick="loadPreset('tech')">Technology Consultancy Case Study</button>
-      <button class="btn" onclick="loadPreset('blank')">Start Blank</button>
-      <button class="btn ghost" onclick="window.print()">Print / Save PDF</button>
+    <div class="header-right">
+      <img class="logo" src="profinda-logo.svg" alt="ProFinda logo">
+      <div class="presets no-print">
+        <button class="btn primary" onclick="loadPreset('big4')">Big 4 Case Study</button>
+        <button class="btn primary" onclick="loadPreset('tech')">Technology Consultancy Case Study</button>
+        <button class="btn" onclick="loadPreset('blank')">Start Blank</button>
+        <button class="btn ghost" onclick="window.print()">Print / Save PDF</button>
+      </div>
     </div>
   </div>
 </header>
