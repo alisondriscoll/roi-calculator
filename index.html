@@ -10,6 +10,9 @@
     --blue:#1f6feb;
     --teal:#0aa3a3;
     --green:#1c8a5a;
+    --purple:#6d3fc4;
+    --purple-bg:#f7f3fe;
+    --purple-border:#d9c5f5;
     --bg:#f4f6f9;
     --card:#ffffff;
     --border:#e2e6ed;
@@ -82,6 +85,59 @@
     gap:8px;
   }
   .card .sub{color:var(--muted); font-size:.8rem; margin:0 0 14px 0;}
+
+  /* Client data vs ProFinda assumption distinction */
+  .tag{
+    font-size:.62rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    padding:3px 9px;
+    border-radius:20px;
+    margin-left:auto;
+    white-space:nowrap;
+  }
+  .tag.client{background:#e8f0fe; color:var(--blue);}
+  .tag.assumption{background:#efe3fc; color:var(--purple);}
+
+  .card.assumption{
+    background:var(--purple-bg);
+    border:1.5px dashed var(--purple-border);
+  }
+  .card.assumption h2{color:var(--purple);}
+  .card.assumption input, .card.assumption select{
+    background:#fff;
+    border-color:var(--purple-border);
+  }
+  .card.assumption input:focus, .card.assumption select:focus{
+    border-color:var(--purple);
+    box-shadow:0 0 0 3px rgba(109,63,196,.14);
+  }
+
+  .section-heading{
+    font-size:1.05rem;
+    font-weight:800;
+    margin:8px 0 2px 0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-heading.client{color:var(--navy);}
+  .section-heading.assumption{color:var(--purple);}
+  .section-sub{font-size:.8rem; color:var(--muted); margin:0 0 16px 0; max-width:640px;}
+  .section-divider{
+    border:none;
+    border-top:2px solid var(--border);
+    margin:26px 0 22px 0;
+  }
+
+  .legend{
+    display:flex; gap:20px; align-items:center; flex-wrap:wrap;
+    font-size:.78rem; color:#dfe7f5; margin-top:14px;
+  }
+  .legend .dot{width:9px;height:9px;border-radius:50%; display:inline-block; margin-right:6px;}
+  .legend .dot.client{background:#7fb0ff;}
+  .legend .dot.assumption{background:#c9a3f5;}
   .field{margin-bottom:12px;}
   .field label{
     display:flex;
@@ -201,6 +257,10 @@
     <div>
       <h1 id="calcTitle">ROI Calculator</h1>
       <p>Adjust the inputs on the left to model the financial impact for any client — every figure on the right recalculates instantly.</p>
+      <div class="legend">
+        <span><span class="dot client"></span>Client-provided data</span>
+        <span><span class="dot assumption"></span>ProFinda suggested assumption</span>
+      </div>
     </div>
     <div class="presets no-print">
       <button class="btn primary" onclick="loadPreset('big4')">Big 4 Case Study</button>
@@ -216,8 +276,11 @@
   <!-- ============ INPUTS ============ -->
   <div id="inputs">
 
+    <div class="section-heading client">📋 Client-Provided Data</div>
+    <p class="section-sub">Facts and figures about the prospect's business, provided by them or gathered during discovery.</p>
+
     <div class="card">
-      <h2>🏢 Client &amp; Business Profile</h2>
+      <h2>🏢 Client &amp; Business Profile <span class="tag client">Client Data</span></h2>
       <p class="sub">Basic details used to scale every calculation below.</p>
       <div class="field">
         <label>Client / Company Name</label>
@@ -263,7 +326,7 @@
     </div>
 
     <div class="card">
-      <h2>👥 Resource Management (RM) Team</h2>
+      <h2>👥 Resource Management (RM) Team <span class="tag client">Client Data</span></h2>
       <div class="grid-2">
         <div class="field">
           <label>Total Number of RMs</label>
@@ -277,14 +340,6 @@
           </div>
         </div>
       </div>
-      <div class="field">
-        <label>RM Efficiency Gain <span class="hint">sensitivity</span></label>
-        <div class="input-wrap">
-          <input class="has-suffix" type="number" id="rmEfficiencyPct" min="0" max="100" step="0.5">
-          <span class="suffix">%</span>
-        </div>
-        <p class="desc">Time RMs save day-to-day, freeing capacity or slowing team growth.</p>
-      </div>
       <hr style="border:none;border-top:1px dashed var(--border); margin:14px 0;">
       <p class="sub" style="margin-bottom:8px;"><strong>Audit businesses only</strong> — leave at 0 if not applicable.</p>
       <div class="grid-2">
@@ -297,17 +352,10 @@
           <input type="number" id="monthsAnnualPlanning" min="0" step="0.5">
         </div>
       </div>
-      <div class="field">
-        <label>Automate Annual Planning — Time Saved <span class="hint">sensitivity</span></label>
-        <div class="input-wrap">
-          <input class="has-suffix" type="number" id="annualPlanningTimeSavedPct" min="0" max="100" step="1">
-          <span class="suffix">%</span>
-        </div>
-      </div>
     </div>
 
     <div class="card">
-      <h2>📈 Engagements, Bench &amp; Attrition</h2>
+      <h2>📈 Engagements, Bench &amp; Attrition <span class="tag client">Client Data</span></h2>
       <div class="grid-2">
         <div class="field">
           <label>Engagements &gt; 3 Months / Year</label>
@@ -337,26 +385,10 @@
           </div>
         </div>
       </div>
-      <div class="grid-2">
-        <div class="field">
-          <label>Bench Reduction <span class="hint">via reverse-match</span></label>
-          <div class="input-wrap">
-            <input class="has-suffix" type="number" id="benchReductionPct" min="0" max="100" step="1">
-            <span class="suffix">%</span>
-          </div>
-        </div>
-        <div class="field">
-          <label>Attrition Reduction <span class="hint">via engagement</span></label>
-          <div class="input-wrap">
-            <input class="has-suffix" type="number" id="attritionReductionPct" min="0" max="100" step="1">
-            <span class="suffix">%</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="card">
-      <h2>🧑‍💼 Contractors</h2>
+      <h2>🧑‍💼 Contractors <span class="tag client">Client Data</span></h2>
       <div class="grid-2">
         <div class="field">
           <label>Number of Contractors / Year</label>
@@ -380,17 +412,10 @@
           <input type="number" id="workingDaysPerMonth" min="1" step="1">
         </div>
       </div>
-      <div class="field">
-        <label>Reduce Contractor Requests By <span class="hint">sensitivity</span></label>
-        <div class="input-wrap">
-          <input class="has-suffix" type="number" id="contractorReductionPct" min="0" max="100" step="1">
-          <span class="suffix">%</span>
-        </div>
-      </div>
     </div>
 
     <div class="card">
-      <h2>🌍 Graduate &amp; Grade Mix</h2>
+      <h2>🌍 Graduate &amp; Grade Mix <span class="tag client">Client Data</span></h2>
       <div class="grid-2">
         <div class="field">
           <label>Offshore Graduate Avg. Cost</label>
@@ -407,18 +432,9 @@
           </div>
         </div>
       </div>
-      <div class="grid-2">
-        <div class="field">
-          <label>Grads per &gt;3mo Engagement</label>
-          <input type="number" id="avgGradPerEngagement" min="0" step="1">
-        </div>
-        <div class="field">
-          <label>Increase Offshore Mix By <span class="hint">sensitivity</span></label>
-          <div class="input-wrap">
-            <input class="has-suffix" type="number" id="offshoreMixPct" min="0" max="100" step="1">
-            <span class="suffix">%</span>
-          </div>
-        </div>
+      <div class="field">
+        <label>Grads per &gt;3mo Engagement</label>
+        <input type="number" id="avgGradPerEngagement" min="0" step="1">
       </div>
       <div class="grid-2">
         <div class="field">
@@ -436,14 +452,10 @@
           </div>
         </div>
       </div>
-      <div class="field">
-        <label>Grade Creep — Managers Contained <span class="hint">sensitivity, heads</span></label>
-        <input type="number" id="gradeCreepManagers" min="0" step="1">
-      </div>
     </div>
 
     <div class="card">
-      <h2>🎓 Hiring, Alumni &amp; CV Automation</h2>
+      <h2>🎓 Hiring &amp; CV Volumes <span class="tag client">Client Data</span></h2>
       <div class="grid-2">
         <div class="field">
           <label>Average Hires / Year</label>
@@ -458,60 +470,117 @@
         </div>
       </div>
       <div class="field">
-        <label>Alumni Rehire Savings <span class="hint">sensitivity</span></label>
-        <div class="input-wrap">
-          <input class="has-suffix" type="number" id="alumniSavingsPct" min="0" max="100" step="1">
-          <span class="suffix">%</span>
-        </div>
-      </div>
-      <hr style="border:none;border-top:1px dashed var(--border); margin:14px 0;">
-      <div class="grid-2">
-        <div class="field">
-          <label>Bios/CVs Created / Year</label>
-          <input type="number" id="numBios" min="0" step="10">
-        </div>
-        <div class="field">
-          <label>Minutes Saved / Bio <span class="hint">sensitivity</span></label>
-          <input type="number" id="cvMinutesSaved" min="0" step="1">
-        </div>
-      </div>
-      <div class="field">
-        <label>Blended Hourly Rate <span class="hint">for time saved</span></label>
-        <div class="input-wrap">
-          <span class="prefix currency-symbol">£</span>
-          <input class="has-prefix" type="number" id="hourlyRate" min="0" step="5">
-        </div>
+        <label>Bios/CVs Created / Year</label>
+        <input type="number" id="numBios" min="0" step="10">
       </div>
     </div>
 
     <div class="card">
-      <h2>🚀 Additional Revenue Opportunities</h2>
-      <div class="grid-2">
-        <div class="field">
-          <label>Utilisation Improvement <span class="hint">sensitivity</span></label>
-          <div class="input-wrap">
-            <input class="has-suffix" type="number" id="utilisationImprovementPct" min="0" max="100" step="0.5">
-            <span class="suffix">%</span>
-          </div>
-        </div>
-        <div class="field">
-          <label>Value of Winning Bids Supported</label>
-          <div class="input-wrap">
-            <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="winningBidsValue" min="0" step="1000">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>💰 Investment (optional)</h2>
+      <h2>💰 Investment (optional) <span class="tag client">Client Data</span></h2>
       <p class="sub">Add an estimated annual cost to turn this into a true ROI multiple &amp; payback period.</p>
       <div class="field">
         <label>Estimated Annual Investment Cost</label>
         <div class="input-wrap">
           <span class="prefix currency-symbol">£</span>
           <input class="has-prefix" type="number" id="investmentCost" min="0" step="1000" placeholder="0">
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="section-heading assumption">💡 ProFinda Suggested Assumptions</div>
+    <p class="section-sub">These are ProFinda's typical improvement benchmarks from prior engagements — pre-populated as sensible starting points, not guarantees. Adjust freely based on conversations with the prospect.</p>
+
+    <div class="card assumption">
+      <h2>📊 Revenue Increase Assumptions <span class="tag assumption">ProFinda Suggested</span></h2>
+      <div class="field">
+        <label>Utilisation Improvement <span class="hint">vs. baseline</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="utilisationImprovementPct" min="0" max="100" step="0.5">
+          <span class="suffix">%</span>
+        </div>
+        <p class="desc">Typical uplift in workforce utilisation once bench management is improved.</p>
+      </div>
+      <div class="field">
+        <label>Bench Reduction <span class="hint">via reverse-match</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="benchReductionPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+        <p class="desc">Reduction in bench headcount achievable through reverse-match capability.</p>
+      </div>
+      <div class="field">
+        <label>Value of Winning Bids Supported</label>
+        <div class="input-wrap">
+          <span class="prefix currency-symbol">£</span>
+          <input class="has-prefix" type="number" id="winningBidsValue" min="0" step="1000">
+        </div>
+        <p class="desc">Conservative estimate: value of one additional deal won with a stronger bid team.</p>
+      </div>
+    </div>
+
+    <div class="card assumption">
+      <h2>⚙️ Cost Savings Assumptions <span class="tag assumption">ProFinda Suggested</span></h2>
+      <div class="field">
+        <label>Automate Annual Planning — Time Saved <span class="hint">audit only</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="annualPlanningTimeSavedPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>RM Efficiency Gain</label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="rmEfficiencyPct" min="0" max="100" step="0.5">
+          <span class="suffix">%</span>
+        </div>
+        <p class="desc">Time RMs save day-to-day, freeing capacity or slowing team growth.</p>
+      </div>
+      <div class="field">
+        <label>Reduce Contractor Requests By</label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="contractorReductionPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Increase Offshore Staff Mix By</label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="offshoreMixPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Grade Creep — Managers Contained <span class="hint">heads, 3mo period</span></label>
+        <input type="number" id="gradeCreepManagers" min="0" step="1">
+      </div>
+      <div class="field">
+        <label>Attrition Reduction <span class="hint">via engagement</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="attritionReductionPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Alumni Rehire Savings</label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="alumniSavingsPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px dashed var(--purple-border); margin:14px 0;">
+      <div class="grid-2">
+        <div class="field">
+          <label>Minutes Saved / Bio <span class="hint">CV automation</span></label>
+          <input type="number" id="cvMinutesSaved" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Blended Hourly Rate</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="hourlyRate" min="0" step="5">
+          </div>
         </div>
       </div>
     </div>
