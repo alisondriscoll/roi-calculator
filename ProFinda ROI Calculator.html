@@ -312,13 +312,13 @@
           <label>Annual Revenue</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="revenue" min="0" step="1000">
+            <input class="has-prefix" type="text" inputmode="decimal" id="revenue" min="0" step="1000">
           </div>
         </div>
       </div>
       <div class="field">
         <label>Total Workforce Size <span class="hint">onshore + offshore, heads</span></label>
-        <input type="number" id="workforceSize" min="0" step="1">
+        <input type="text" inputmode="decimal" id="workforceSize" min="0" step="1">
       </div>
 
       <hr style="border:none;border-top:1px dashed var(--border); margin:14px 0;">
@@ -360,14 +360,14 @@
           <label>Onshore Average Salary</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="onshoreAvgSalary" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="onshoreAvgSalary" min="0" step="500">
           </div>
         </div>
         <div class="field">
           <label>Offshore Average Salary</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="offshoreAvgSalary" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="offshoreAvgSalary" min="0" step="500">
           </div>
         </div>
       </div>
@@ -379,13 +379,13 @@
       <div class="grid-2">
         <div class="field">
           <label>Total Number of RMs</label>
-          <input type="number" id="totalRMs" min="0" step="1">
+          <input type="text" inputmode="decimal" id="totalRMs" min="0" step="1">
         </div>
         <div class="field">
           <label>Average Salary of RMs</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="avgRMSalary" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="avgRMSalary" min="0" step="500">
           </div>
         </div>
       </div>
@@ -394,11 +394,11 @@
       <div class="grid-2">
         <div class="field">
           <label>Number of Audit RMs</label>
-          <input type="number" id="auditRMs" min="0" step="1">
+          <input type="text" inputmode="decimal" id="auditRMs" min="0" step="1">
         </div>
         <div class="field">
           <label>Months on Annual Planning</label>
-          <input type="number" id="monthsAnnualPlanning" min="0" step="0.5">
+          <input type="text" inputmode="decimal" id="monthsAnnualPlanning" min="0" step="0.5">
         </div>
       </div>
     </div>
@@ -408,13 +408,13 @@
       <div class="grid-2">
         <div class="field">
           <label>Engagements &gt; 3 Months / Year</label>
-          <input type="number" id="engagements3mo" min="0" step="1">
+          <input type="text" inputmode="decimal" id="engagements3mo" min="0" step="1">
         </div>
         <div class="field">
           <label>Average Recruitment Cost / Hire</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="recruitmentCost" min="0" step="100">
+            <input class="has-prefix" type="text" inputmode="decimal" id="recruitmentCost" min="0" step="100">
           </div>
         </div>
       </div>
@@ -441,24 +441,24 @@
       <div class="grid-2">
         <div class="field">
           <label>Number of Contractors / Year</label>
-          <input type="number" id="numContractors" min="0" step="1">
+          <input type="text" inputmode="decimal" id="numContractors" min="0" step="1">
         </div>
         <div class="field">
           <label>Average Contractor Day Rate</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="contractorDayRate" min="0" step="10">
+            <input class="has-prefix" type="text" inputmode="decimal" id="contractorDayRate" min="0" step="10">
           </div>
         </div>
       </div>
       <div class="grid-2">
         <div class="field">
           <label>Average Contractor Tenure <span class="hint">months</span></label>
-          <input type="number" id="contractorTenureMonths" min="0" step="0.5">
+          <input type="text" inputmode="decimal" id="contractorTenureMonths" min="0" step="0.5">
         </div>
         <div class="field">
           <label>Working Days / Month</label>
-          <input type="number" id="workingDaysPerMonth" min="1" step="1">
+          <input type="text" inputmode="decimal" id="workingDaysPerMonth" min="1" step="1">
         </div>
       </div>
     </div>
@@ -470,34 +470,34 @@
           <label>Offshore Graduate Avg. Cost</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="offshoreGradCost" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="offshoreGradCost" min="0" step="500">
           </div>
         </div>
         <div class="field">
           <label>Onshore Graduate Avg. Cost</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="onshoreGradCost" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="onshoreGradCost" min="0" step="500">
           </div>
         </div>
       </div>
       <div class="field">
         <label>Grads per &gt;3mo Engagement</label>
-        <input type="number" id="avgGradPerEngagement" min="0" step="1">
+        <input type="text" inputmode="decimal" id="avgGradPerEngagement" min="0" step="1">
       </div>
       <div class="grid-2">
         <div class="field">
           <label>Average Senior Manager Salary</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="seniorManagerSalary" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="seniorManagerSalary" min="0" step="500">
           </div>
         </div>
         <div class="field">
           <label>Average Manager Salary</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="managerSalary" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="managerSalary" min="0" step="500">
           </div>
         </div>
       </div>
@@ -508,19 +508,19 @@
       <div class="grid-2">
         <div class="field">
           <label>Average Hires / Year</label>
-          <input type="number" id="avgHiresPerYear" min="0" step="10">
+          <input type="text" inputmode="decimal" id="avgHiresPerYear" min="0" step="10">
         </div>
         <div class="field">
           <label>Training &amp; HR Cost / New Joiner</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="trainingHRCost" min="0" step="500">
+            <input class="has-prefix" type="text" inputmode="decimal" id="trainingHRCost" min="0" step="500">
           </div>
         </div>
       </div>
       <div class="field">
         <label>Bios/CVs Created / Year</label>
-        <input type="number" id="numBios" min="0" step="10">
+        <input type="text" inputmode="decimal" id="numBios" min="0" step="10">
       </div>
     </div>
 
@@ -530,11 +530,11 @@
       <div class="grid-2">
         <div class="field">
           <label>Total Annual RFPs Received</label>
-          <input type="number" id="annualRFPs" min="0" step="1">
+          <input type="text" inputmode="decimal" id="annualRFPs" min="0" step="1">
         </div>
         <div class="field">
           <label>Avg. Time Spent / RFP <span class="hint">hours</span></label>
-          <input type="number" id="avgHoursPerRFP" min="0" step="1">
+          <input type="text" inputmode="decimal" id="avgHoursPerRFP" min="0" step="1">
         </div>
       </div>
     </div>
@@ -545,13 +545,13 @@
       <div class="grid-2">
         <div class="field">
           <label>Avg. Roles Staffed / Year</label>
-          <input type="number" id="rolesStaffedAnnually" min="0" step="10">
+          <input type="text" inputmode="decimal" id="rolesStaffedAnnually" min="0" step="10">
         </div>
         <div class="field">
           <label>Avg. Revenue Value / Role</label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="avgRevenuePerRole" min="0" step="1000">
+            <input class="has-prefix" type="text" inputmode="decimal" id="avgRevenuePerRole" min="0" step="1000">
           </div>
         </div>
       </div>
@@ -564,7 +564,7 @@
         <label>Estimated Annual Investment Cost</label>
         <div class="input-wrap">
           <span class="prefix currency-symbol">£</span>
-          <input class="has-prefix" type="number" id="investmentCost" min="0" step="1000" placeholder="0">
+          <input class="has-prefix" type="text" inputmode="decimal" id="investmentCost" min="0" step="1000" placeholder="0">
         </div>
       </div>
     </div>
@@ -604,7 +604,7 @@
         <label>Value of Winning Bids Supported</label>
         <div class="input-wrap">
           <span class="prefix currency-symbol">£</span>
-          <input class="has-prefix" type="number" id="winningBidsValue" min="0" step="1000">
+          <input class="has-prefix" type="text" inputmode="decimal" id="winningBidsValue" min="0" step="1000">
         </div>
         <p class="desc">Conservative estimate: value of one additional deal won with a stronger bid team.</p>
       </div>
@@ -644,7 +644,7 @@
       </div>
       <div class="field">
         <label>Grade Creep — Managers Contained <span class="hint">heads, 3mo period</span></label>
-        <input type="number" id="gradeCreepManagers" min="0" step="1">
+        <input type="text" inputmode="decimal" id="gradeCreepManagers" min="0" step="1">
       </div>
       <div class="field">
         <label>Attrition Reduction <span class="hint">via engagement</span></label>
@@ -664,13 +664,13 @@
       <div class="grid-2">
         <div class="field">
           <label>Minutes Saved / Bio <span class="hint">CV automation</span></label>
-          <input type="number" id="cvMinutesSaved" min="0" step="1">
+          <input type="text" inputmode="decimal" id="cvMinutesSaved" min="0" step="1">
         </div>
         <div class="field">
           <label>Blended Hourly Rate <span class="hint">bid/support team</span></label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
-            <input class="has-prefix" type="number" id="hourlyRate" min="0" step="5">
+            <input class="has-prefix" type="text" inputmode="decimal" id="hourlyRate" min="0" step="5">
           </div>
         </div>
       </div>
@@ -812,22 +812,78 @@ const PRESETS = {
   }
 };
 
+const COMMA_FIELD_IDS = [
+  'revenue','workforceSize','onshoreAvgSalary','offshoreAvgSalary',
+  'totalRMs','avgRMSalary','auditRMs','monthsAnnualPlanning','engagements3mo','recruitmentCost',
+  'numContractors','contractorDayRate','contractorTenureMonths','workingDaysPerMonth',
+  'offshoreGradCost','onshoreGradCost','avgGradPerEngagement','seniorManagerSalary','managerSalary',
+  'avgHiresPerYear','trainingHRCost','numBios','annualRFPs','avgHoursPerRFP',
+  'rolesStaffedAnnually','avgRevenuePerRole','investmentCost','winningBidsValue',
+  'gradeCreepManagers','cvMinutesSaved','hourlyRate'
+];
+
+function stripCommas(str){
+  return (str === null || str === undefined) ? '' : str.toString().replace(/,/g, '');
+}
+
+function formatWithCommas(value){
+  let strVal = stripCommas(value);
+  if (strVal === '' || strVal === '-' || strVal === '.') return strVal;
+  const parts = strVal.split('.');
+  const isNeg = parts[0].startsWith('-');
+  const digits = parts[0].replace(/-/g, '').replace(/^0+(?=\d)/, '');
+  const intFormatted = digits === '' ? '0' : digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  let result = (isNeg ? '-' : '') + intFormatted;
+  if (parts.length > 1) result += '.' + parts[1];
+  return result;
+}
+
+function attachCommaFormatting(el){
+  el.addEventListener('input', () => {
+    const cursorPos = el.selectionStart;
+    const digitsBeforeCursor = el.value.slice(0, cursorPos).replace(/[^0-9.]/g, '').length;
+
+    // Sanitize: keep digits and at most one decimal point
+    let sanitized = el.value.replace(/[^0-9.]/g, '');
+    const firstDot = sanitized.indexOf('.');
+    if (firstDot !== -1){
+      sanitized = sanitized.slice(0, firstDot + 1) + sanitized.slice(firstDot + 1).replace(/\./g, '');
+    }
+
+    el.value = formatWithCommas(sanitized);
+
+    // Restore cursor position based on digit count before it
+    let count = 0, pos = el.value.length;
+    for (let i = 0; i < el.value.length; i++){
+      if (/[0-9.]/.test(el.value[i])) count++;
+      if (count === digitsBeforeCursor){ pos = i + 1; break; }
+    }
+    if (digitsBeforeCursor === 0) pos = 0;
+    el.setSelectionRange(pos, pos);
+  });
+}
+
 function loadPreset(name){
   const p = PRESETS[name];
   ids.forEach(id => {
     const el = document.getElementById(id);
-    if (!el) return;
-    if (p[id] !== undefined) el.value = p[id];
+    if (!el || p[id] === undefined) return;
+    el.value = COMMA_FIELD_IDS.includes(id) ? formatWithCommas(p[id]) : p[id];
   });
   calculate();
 }
 
 function num(id){
   const el = document.getElementById(id);
-  const v = parseFloat(el.value);
+  const v = parseFloat(stripCommas(el.value));
   return isNaN(v) ? 0 : v;
 }
 function pct(id){ return num(id) / 100; }
+
+COMMA_FIELD_IDS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) attachCommaFormatting(el);
+});
 
 function fmtMoney(v, symbol){
   const rounded = Math.round(v);
