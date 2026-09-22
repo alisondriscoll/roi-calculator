@@ -31,22 +31,25 @@
     line-height:1.45;
   }
   header{
+    position:relative;
     background:linear-gradient(135deg,var(--navy),#123a6b 60%, var(--teal));
     color:#fff;
     padding:28px 32px;
   }
   header h1{margin:0 0 4px 0; font-size:1.6rem;}
   header p{margin:0; opacity:.85; font-size:.95rem; max-width:760px;}
-  .header-row{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;}
-  .header-right{display:flex; flex-direction:column; align-items:flex-end; gap:12px;}
+  .header-row{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; padding-right:150px;}
   .logo{
-    height:30px;
+    position:absolute;
+    top:20px;
+    right:32px;
+    height:34px;
     width:auto;
     display:block;
     background:#fff;
-    padding:7px 14px;
+    padding:8px 16px;
     border-radius:8px;
-    box-shadow:0 1px 3px rgba(0,0,0,.15);
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
   }
   .presets{display:flex; gap:8px; flex-wrap:wrap;}
   .btn{
@@ -252,6 +255,11 @@
   .roi-box .roi-item .value{font-size:1.2rem; font-weight:700; color:#ffffff;}
   .roi-box .roi-item .label{font-size:.72rem; color:#cfe0f5; text-transform:uppercase;}
 
+  @media (max-width: 700px){
+    .logo{position:static; margin-top:16px;}
+    .header-row{padding-right:0;}
+  }
+
   @media print{
     header .presets, .no-print{display:none !important;}
     .layout{grid-template-columns:1fr; padding:0 10px;}
@@ -272,16 +280,14 @@
         <span><span class="dot assumption"></span>ProFinda suggested assumption</span>
       </div>
     </div>
-    <div class="header-right">
-      <img class="logo" src="profinda-logo.svg" alt="ProFinda logo">
-      <div class="presets no-print">
-        <button class="btn primary" onclick="loadPreset('big4')">Big 4 Case Study</button>
-        <button class="btn primary" onclick="loadPreset('tech')">Technology Consultancy Case Study</button>
-        <button class="btn" onclick="loadPreset('blank')">Start Blank</button>
-        <button class="btn ghost" onclick="window.print()">Print / Save PDF</button>
-      </div>
+    <div class="presets no-print">
+      <button class="btn primary" onclick="loadPreset('big4')">Big 4 Case Study</button>
+      <button class="btn primary" onclick="loadPreset('tech')">Technology Consultancy Case Study</button>
+      <button class="btn" onclick="loadPreset('blank')">Start Blank</button>
+      <button class="btn ghost" onclick="window.print()">Print / Save PDF</button>
     </div>
   </div>
+  <img class="logo" src="profinda-logo.svg" alt="ProFinda logo">
 </header>
 
 <div class="layout">
