@@ -303,26 +303,62 @@
           </div>
         </div>
       </div>
+      <div class="field">
+        <label>Total Workforce Size <span class="hint">onshore + offshore, heads</span></label>
+        <input type="number" id="workforceSize" min="0" step="1">
+      </div>
+
+      <hr style="border:none;border-top:1px dashed var(--border); margin:14px 0;">
+      <p class="sub" style="margin-bottom:8px;">🌐 <strong>Onshore / Offshore Delivery Split</strong> — lets us show distinct revenue impact per delivery pool.</p>
       <div class="grid-2">
         <div class="field">
-          <label>Workforce Size <span class="hint">heads</span></label>
-          <input type="number" id="workforceSize" min="0" step="1">
+          <label>Offshore Workforce % <span class="hint">of total heads</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="offshoreWorkforcePct" min="0" max="100" step="1">
+            <span class="suffix">%</span>
+          </div>
         </div>
         <div class="field">
-          <label>Average Utilisation % <span class="hint">baseline</span></label>
+          <label>Offshore Revenue % <span class="hint">of annual revenue</span></label>
           <div class="input-wrap">
-            <input class="has-suffix" type="number" id="utilisation" min="0" max="100" step="0.1">
+            <input class="has-suffix" type="number" id="offshoreRevenuePct" min="0" max="100" step="1">
             <span class="suffix">%</span>
           </div>
         </div>
       </div>
-      <div class="field">
-        <label>Average Salary of Workforce Members <span class="hint">used in bench savings</span></label>
-        <div class="input-wrap">
-          <span class="prefix currency-symbol">£</span>
-          <input class="has-prefix" type="number" id="avgSalary" min="0" step="500">
+      <div class="grid-2">
+        <div class="field">
+          <label>Onshore Utilisation % <span class="hint">baseline</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="onshoreUtilisation" min="0" max="100" step="0.1">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Offshore Utilisation % <span class="hint">baseline</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="offshoreUtilisation" min="0" max="100" step="0.1">
+            <span class="suffix">%</span>
+          </div>
         </div>
       </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Onshore Average Salary</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="onshoreAvgSalary" min="0" step="500">
+          </div>
+        </div>
+        <div class="field">
+          <label>Offshore Average Salary</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="offshoreAvgSalary" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <p class="desc">Used to calculate distinct onshore vs. offshore revenue impact from utilisation improvement and bench management.</p>
     </div>
 
     <div class="card">
@@ -476,6 +512,39 @@
     </div>
 
     <div class="card">
+      <h2>📄 Bid Response &amp; RFPs <span class="tag client">Client Data</span></h2>
+      <p class="sub">Used to size the value of freeing up bid teams via easier CV access, Bulk CV Export &amp; Export Wizard.</p>
+      <div class="grid-2">
+        <div class="field">
+          <label>Total Annual RFPs Received</label>
+          <input type="number" id="annualRFPs" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Avg. Time Spent / RFP <span class="hint">hours</span></label>
+          <input type="number" id="avgHoursPerRFP" min="0" step="1">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🧩 Cross-Functional Skills Deployment <span class="tag client">Client Data</span></h2>
+      <p class="sub">Models the value of moving away from siloed competency deployment — staffing more demand via skills visibility across SLs/Regions.</p>
+      <div class="grid-2">
+        <div class="field">
+          <label>Avg. Roles Staffed / Year</label>
+          <input type="number" id="rolesStaffedAnnually" min="0" step="10">
+        </div>
+        <div class="field">
+          <label>Avg. Revenue Value / Role</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="avgRevenuePerRole" min="0" step="1000">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
       <h2>💰 Investment (optional) <span class="tag client">Client Data</span></h2>
       <p class="sub">Add an estimated annual cost to turn this into a true ROI multiple &amp; payback period.</p>
       <div class="field">
@@ -509,6 +578,14 @@
           <span class="suffix">%</span>
         </div>
         <p class="desc">Reduction in bench headcount achievable through reverse-match capability.</p>
+      </div>
+      <div class="field">
+        <label>Role Fulfilment Uplift <span class="hint">skills visibility</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="roleFulfilmentUpliftPct" min="0" max="100" step="0.5">
+          <span class="suffix">%</span>
+        </div>
+        <p class="desc">Extra roles filled thanks to cross-SL/Region skills visibility, replacing siloed competency deployment.</p>
       </div>
       <div class="field">
         <label>Value of Winning Bids Supported</label>
@@ -545,11 +622,12 @@
         </div>
       </div>
       <div class="field">
-        <label>Increase Offshore Staff Mix By</label>
+        <label>Increase Offshore Staff Mix By <span class="hint">graduate hires</span></label>
         <div class="input-wrap">
           <input class="has-suffix" type="number" id="offshoreMixPct" min="0" max="100" step="1">
           <span class="suffix">%</span>
         </div>
+        <p class="desc">Specific to new graduate hiring mix on &gt;3mo engagements — separate from the overall delivery pool split above.</p>
       </div>
       <div class="field">
         <label>Grade Creep — Managers Contained <span class="hint">heads, 3mo period</span></label>
@@ -576,12 +654,20 @@
           <input type="number" id="cvMinutesSaved" min="0" step="1">
         </div>
         <div class="field">
-          <label>Blended Hourly Rate</label>
+          <label>Blended Hourly Rate <span class="hint">bid/support team</span></label>
           <div class="input-wrap">
             <span class="prefix currency-symbol">£</span>
             <input class="has-prefix" type="number" id="hourlyRate" min="0" step="5">
           </div>
         </div>
+      </div>
+      <div class="field">
+        <label>Bid Response Time Saved <span class="hint">per RFP</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="bidTimeSavedPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+        <p class="desc">Time freed up per RFP via easy CV accessibility, Bulk CV Export &amp; Export Wizard — valued at the blended hourly rate above.</p>
       </div>
     </div>
 
@@ -617,6 +703,21 @@
     </div>
 
     <div class="card">
+      <h2 style="margin-bottom:12px;">🌐 Revenue Impact by Delivery Pool</h2>
+      <div class="grid-2">
+        <div class="kpi" style="box-shadow:none; border-color:var(--blue);">
+          <div class="label">Onshore</div>
+          <div class="value" id="kpiOnshore" style="font-size:1.25rem;">£0</div>
+        </div>
+        <div class="kpi" style="box-shadow:none; border-color:var(--teal);">
+          <div class="label">Offshore</div>
+          <div class="value" id="kpiOffshore" style="font-size:1.25rem;">£0</div>
+        </div>
+      </div>
+      <p class="footnote" style="margin-top:10px;">Combined utilisation-improvement &amp; bench-management revenue impact for each delivery pool, based on the Onshore/Offshore split entered in Client &amp; Business Profile.</p>
+    </div>
+
+    <div class="card">
       <details open>
         <summary>Revenue Increase Drivers</summary>
         <table class="breakdown" id="revenueTable">
@@ -643,41 +744,57 @@
 
 <script>
 const ids = [
-  'clientName','currency','revenue','workforceSize','utilisation','avgSalary',
+  'clientName','currency','revenue','workforceSize',
+  'offshoreWorkforcePct','offshoreRevenuePct','onshoreUtilisation','offshoreUtilisation','onshoreAvgSalary','offshoreAvgSalary',
   'totalRMs','avgRMSalary','rmEfficiencyPct','auditRMs','monthsAnnualPlanning','annualPlanningTimeSavedPct',
   'engagements3mo','recruitmentCost','benchPct','attritionPct','benchReductionPct','attritionReductionPct',
   'numContractors','contractorDayRate','contractorTenureMonths','workingDaysPerMonth','contractorReductionPct',
   'offshoreGradCost','onshoreGradCost','avgGradPerEngagement','offshoreMixPct','seniorManagerSalary','managerSalary','gradeCreepManagers',
-  'avgHiresPerYear','trainingHRCost','alumniSavingsPct','numBios','cvMinutesSaved','hourlyRate',
+  'avgHiresPerYear','trainingHRCost','numBios',
+  'annualRFPs','avgHoursPerRFP','bidTimeSavedPct',
+  'rolesStaffedAnnually','avgRevenuePerRole','roleFulfilmentUpliftPct',
+  'alumniSavingsPct','cvMinutesSaved','hourlyRate',
   'utilisationImprovementPct','winningBidsValue','investmentCost'
 ];
 
 const PRESETS = {
   big4: {
-    clientName:'Big 4 Case Study', currency:'£', revenue:2900000000, workforceSize:25000, utilisation:68, avgSalary:125000,
+    clientName:'Big 4 Case Study', currency:'£', revenue:2900000000, workforceSize:25000,
+    offshoreWorkforcePct:20, offshoreRevenuePct:10, onshoreUtilisation:68, offshoreUtilisation:75, onshoreAvgSalary:125000, offshoreAvgSalary:45000,
     totalRMs:140, avgRMSalary:65000, rmEfficiencyPct:15, auditRMs:60, monthsAnnualPlanning:5, annualPlanningTimeSavedPct:60,
     engagements3mo:2800, recruitmentCost:7000, benchPct:16, attritionPct:15, benchReductionPct:25, attritionReductionPct:25,
     numContractors:1250, contractorDayRate:750, contractorTenureMonths:3, workingDaysPerMonth:20, contractorReductionPct:10,
     offshoreGradCost:10000, onshoreGradCost:30000, avgGradPerEngagement:2, offshoreMixPct:10, seniorManagerSalary:110000, managerSalary:85000, gradeCreepManagers:150,
-    avgHiresPerYear:1500, trainingHRCost:25000, alumniSavingsPct:10, numBios:12000, cvMinutesSaved:30, hourlyRate:100,
+    avgHiresPerYear:1500, trainingHRCost:25000, numBios:12000,
+    annualRFPs:400, avgHoursPerRFP:25, bidTimeSavedPct:20,
+    rolesStaffedAnnually:3500, avgRevenuePerRole:120000, roleFulfilmentUpliftPct:8,
+    alumniSavingsPct:10, cvMinutesSaved:30, hourlyRate:100,
     utilisationImprovementPct:1, winningBidsValue:500000, investmentCost:0
   },
   tech: {
-    clientName:'Technology Consultancy Case Study', currency:'$', revenue:760000000, workforceSize:10000, utilisation:70, avgSalary:80000,
+    clientName:'Technology Consultancy Case Study', currency:'$', revenue:760000000, workforceSize:10000,
+    offshoreWorkforcePct:25, offshoreRevenuePct:12, onshoreUtilisation:70, offshoreUtilisation:78, onshoreAvgSalary:80000, offshoreAvgSalary:40000,
     totalRMs:40, avgRMSalary:65000, rmEfficiencyPct:30, auditRMs:0, monthsAnnualPlanning:0, annualPlanningTimeSavedPct:60,
     engagements3mo:3000, recruitmentCost:7000, benchPct:18, attritionPct:14, benchReductionPct:25, attritionReductionPct:25,
     numContractors:750, contractorDayRate:750, contractorTenureMonths:3, workingDaysPerMonth:20, contractorReductionPct:10,
     offshoreGradCost:10000, onshoreGradCost:30000, avgGradPerEngagement:2, offshoreMixPct:10, seniorManagerSalary:95000, managerSalary:65000, gradeCreepManagers:100,
-    avgHiresPerYear:600, trainingHRCost:25000, alumniSavingsPct:10, numBios:3000, cvMinutesSaved:30, hourlyRate:100,
+    avgHiresPerYear:600, trainingHRCost:25000, numBios:3000,
+    annualRFPs:300, avgHoursPerRFP:20, bidTimeSavedPct:20,
+    rolesStaffedAnnually:3000, avgRevenuePerRole:150000, roleFulfilmentUpliftPct:8,
+    alumniSavingsPct:10, cvMinutesSaved:30, hourlyRate:100,
     utilisationImprovementPct:1, winningBidsValue:500000, investmentCost:0
   },
   blank: {
-    clientName:'', currency:'£', revenue:0, workforceSize:0, utilisation:0, avgSalary:0,
+    clientName:'', currency:'£', revenue:0, workforceSize:0,
+    offshoreWorkforcePct:0, offshoreRevenuePct:0, onshoreUtilisation:0, offshoreUtilisation:0, onshoreAvgSalary:0, offshoreAvgSalary:0,
     totalRMs:0, avgRMSalary:0, rmEfficiencyPct:0, auditRMs:0, monthsAnnualPlanning:0, annualPlanningTimeSavedPct:0,
     engagements3mo:0, recruitmentCost:0, benchPct:0, attritionPct:0, benchReductionPct:0, attritionReductionPct:0,
     numContractors:0, contractorDayRate:0, contractorTenureMonths:0, workingDaysPerMonth:20, contractorReductionPct:0,
     offshoreGradCost:0, onshoreGradCost:0, avgGradPerEngagement:0, offshoreMixPct:0, seniorManagerSalary:0, managerSalary:0, gradeCreepManagers:0,
-    avgHiresPerYear:0, trainingHRCost:0, alumniSavingsPct:0, numBios:0, cvMinutesSaved:0, hourlyRate:100,
+    avgHiresPerYear:0, trainingHRCost:0, numBios:0,
+    annualRFPs:0, avgHoursPerRFP:0, bidTimeSavedPct:0,
+    rolesStaffedAnnually:0, avgRevenuePerRole:0, roleFulfilmentUpliftPct:0,
+    alumniSavingsPct:0, cvMinutesSaved:0, hourlyRate:100,
     utilisationImprovementPct:0, winningBidsValue:0, investmentCost:0
   }
 };
@@ -717,8 +834,13 @@ function calculate(){
   // Inputs
   const revenue = num('revenue');
   const workforceSize = num('workforceSize');
-  const utilisation = pct('utilisation');
-  const avgSalary = num('avgSalary');
+
+  const offshoreWorkforcePct = pct('offshoreWorkforcePct');
+  const offshoreRevenuePct = pct('offshoreRevenuePct');
+  const onshoreUtilisation = pct('onshoreUtilisation');
+  const offshoreUtilisation = pct('offshoreUtilisation');
+  const onshoreAvgSalary = num('onshoreAvgSalary');
+  const offshoreAvgSalary = num('offshoreAvgSalary');
 
   const totalRMs = num('totalRMs');
   const avgRMSalary = num('avgRMSalary');
@@ -750,8 +872,17 @@ function calculate(){
 
   const avgHiresPerYear = num('avgHiresPerYear');
   const trainingHRCost = num('trainingHRCost');
-  const alumniSavingsPct = pct('alumniSavingsPct');
   const numBios = num('numBios');
+
+  const annualRFPs = num('annualRFPs');
+  const avgHoursPerRFP = num('avgHoursPerRFP');
+  const bidTimeSavedPct = pct('bidTimeSavedPct');
+
+  const rolesStaffedAnnually = num('rolesStaffedAnnually');
+  const avgRevenuePerRole = num('avgRevenuePerRole');
+  const roleFulfilmentUpliftPct = pct('roleFulfilmentUpliftPct');
+
+  const alumniSavingsPct = pct('alumniSavingsPct');
   const cvMinutesSaved = num('cvMinutesSaved');
   const hourlyRate = num('hourlyRate');
 
@@ -762,7 +893,6 @@ function calculate(){
   // Calcs (mirrors D-column formulas from the source workbook)
   const rmTeamCost = totalRMs * avgRMSalary;                          // D6
   const auditRMTeamCost = auditRMs * avgRMSalary;                     // D7
-  const benchHeads = workforceSize * benchPct;                        // D11
   const attritionHeads = workforceSize * attritionPct;                // D12
   const contractorTenureDays = contractorTenureMonths * workingDaysPerMonth; // D16
   const totalGradResources = engagements3mo * avgGradPerEngagement;   // D19
@@ -772,11 +902,25 @@ function calculate(){
   const mgr3moSalary = managerSalary / 4;                             // D21
   const totalHiringTrainingCost = (avgHiresPerYear * trainingHRCost) + recruitmentCost; // D23
 
+  // Onshore / Offshore delivery pool split
+  const offshoreHeadcount = workforceSize * offshoreWorkforcePct;
+  const onshoreHeadcount = workforceSize - offshoreHeadcount;
+  const offshoreRevenue = revenue * offshoreRevenuePct;
+  const onshoreRevenue = revenue - offshoreRevenue;
+  const onshoreBenchHeads = onshoreHeadcount * benchPct;
+  const offshoreBenchHeads = offshoreHeadcount * benchPct;
+
   // Revenue increase drivers
-  const revUtilisation = revenue * utilisationImprovementPct * utilisation;      // D27
-  const revBenchMgmt = benchHeads * benchReductionPct * avgSalary;              // D28
+  const revUtilOnshore = onshoreRevenue * utilisationImprovementPct * onshoreUtilisation;
+  const revUtilOffshore = offshoreRevenue * utilisationImprovementPct * offshoreUtilisation;
+  const revBenchOnshore = onshoreBenchHeads * benchReductionPct * onshoreAvgSalary;
+  const revBenchOffshore = offshoreBenchHeads * benchReductionPct * offshoreAvgSalary;
+  const revRoleFulfilment = rolesStaffedAnnually * roleFulfilmentUpliftPct * avgRevenuePerRole;
   const revWinningBids = winningBidsValue;                                     // D29
-  const revenueTotal = revUtilisation + revBenchMgmt + revWinningBids;         // D30
+  const revenueTotal = revUtilOnshore + revUtilOffshore + revBenchOnshore + revBenchOffshore + revRoleFulfilment + revWinningBids;
+
+  const onshoreRevenueImpact = revUtilOnshore + revBenchOnshore;
+  const offshoreRevenueImpact = revUtilOffshore + revBenchOffshore;
 
   // Cost savings drivers
   const costAnnualPlanning = auditRMTeamCost * annualPlanningTimeSavedPct / 12 * monthsAnnualPlanning; // D33
@@ -787,8 +931,9 @@ function calculate(){
   const costAttrition = attritionHeads * attritionReductionPct * recruitmentCost;  // D38
   const costAlumni = totalHiringTrainingCost * alumniSavingsPct;                // D39
   const costCVAutomation = numBios * cvMinutesSaved / 60 * hourlyRate;          // D40
+  const costBidResponse = annualRFPs * avgHoursPerRFP * bidTimeSavedPct * hourlyRate;
   const costTotal = costAnnualPlanning + costRMEfficiency + costContractorReduction +
-                     costOffshoreMix + costGradeCreep + costAttrition + costAlumni + costCVAutomation; // D41
+                     costOffshoreMix + costGradeCreep + costAttrition + costAlumni + costCVAutomation + costBidResponse;
 
   const grandTotal = revenueTotal + costTotal; // D42
   const pctOfRevenue = revenue !== 0 ? grandTotal / revenue : 0; // D43
@@ -798,6 +943,8 @@ function calculate(){
   document.getElementById('kpiCost').textContent = fmtMoney(costTotal, symbol);
   document.getElementById('kpiTotal').textContent = fmtMoney(grandTotal, symbol);
   document.getElementById('kpiPct').textContent = fmtPct(pctOfRevenue) + ' of current revenue';
+  document.getElementById('kpiOnshore').textContent = fmtMoney(onshoreRevenueImpact, symbol);
+  document.getElementById('kpiOffshore').textContent = fmtMoney(offshoreRevenueImpact, symbol);
 
   const roiBox = document.getElementById('roiBox');
   if (investmentCost > 0){
@@ -813,19 +960,23 @@ function calculate(){
 
   // Breakdown tables
   const revenueDrivers = [
-    {name:'Improve Utilisation', value:revUtilisation, desc:`${(utilisationImprovementPct*100).toFixed(1)}% utilisation uplift on ${symbol}${Math.round(revenue).toLocaleString()} revenue, adjusted for ${(utilisation*100).toFixed(0)}% baseline utilisation.`},
-    {name:'Reverse-Match / Bench Management', value:revBenchMgmt, desc:`Reducing the ${Math.round(benchHeads).toLocaleString()}-head bench by ${(benchReductionPct*100).toFixed(0)}%, at an average salary of ${symbol}${Math.round(avgSalary).toLocaleString()}.`},
+    {name:'Improve Utilisation — Onshore', value:revUtilOnshore, desc:`${(utilisationImprovementPct*100).toFixed(1)}% utilisation uplift on ${symbol}${Math.round(onshoreRevenue).toLocaleString()} onshore revenue, adjusted for ${(onshoreUtilisation*100).toFixed(0)}% baseline onshore utilisation.`},
+    {name:'Improve Utilisation — Offshore', value:revUtilOffshore, desc:`${(utilisationImprovementPct*100).toFixed(1)}% utilisation uplift on ${symbol}${Math.round(offshoreRevenue).toLocaleString()} offshore revenue, adjusted for ${(offshoreUtilisation*100).toFixed(0)}% baseline offshore utilisation.`},
+    {name:'Reverse-Match / Bench Management — Onshore', value:revBenchOnshore, desc:`Reducing the ${Math.round(onshoreBenchHeads).toLocaleString()}-head onshore bench by ${(benchReductionPct*100).toFixed(0)}%, at an average onshore salary of ${symbol}${Math.round(onshoreAvgSalary).toLocaleString()}.`},
+    {name:'Reverse-Match / Bench Management — Offshore', value:revBenchOffshore, desc:`Reducing the ${Math.round(offshoreBenchHeads).toLocaleString()}-head offshore bench by ${(benchReductionPct*100).toFixed(0)}%, at an average offshore salary of ${symbol}${Math.round(offshoreAvgSalary).toLocaleString()}.`},
+    {name:'Cross-Functional Skills Visibility', value:revRoleFulfilment, desc:`${(roleFulfilmentUpliftPct*100).toFixed(1)}% higher role fulfilment across ${rolesStaffedAnnually.toLocaleString()} roles/year staffed, at ${symbol}${Math.round(avgRevenuePerRole).toLocaleString()} revenue value per role — driven by cross-SL/Region skills visibility replacing siloed deployment.`},
     {name:'Supporting Winning Bids', value:revWinningBids, desc:`Estimated value of deals won with a stronger bid team.`}
   ];
   const costDrivers = [
     {name:'Automate Annual Planning', value:costAnnualPlanning, desc:`${auditRMs.toLocaleString()} audit RMs saving ${(annualPlanningTimeSavedPct*100).toFixed(0)}% of time over ${monthsAnnualPlanning} months of planning (audit only).`},
     {name:'RM Efficiencies', value:costRMEfficiency, desc:`${totalRMs.toLocaleString()} RMs achieving ${(rmEfficiencyPct*100).toFixed(0)}% efficiency gains on ${symbol}${Math.round(avgRMSalary).toLocaleString()} average salary.`},
     {name:'Reduce Contractor Requests', value:costContractorReduction, desc:`${(contractorReductionPct*100).toFixed(0)}% reduction of ${numContractors.toLocaleString()} contractors at ${symbol}${Math.round(contractorDayRate).toLocaleString()}/day for ${contractorTenureMonths} months.`},
-    {name:'Increase Offshore Staff Mix', value:costOffshoreMix, desc:`Shifting ${(offshoreMixPct*100).toFixed(0)}% of ${Math.round(totalGradResources).toLocaleString()} graduate roles from onshore to offshore.`},
+    {name:'Increase Offshore Staff Mix (Graduate Hires)', value:costOffshoreMix, desc:`Shifting ${(offshoreMixPct*100).toFixed(0)}% of ${Math.round(totalGradResources).toLocaleString()} graduate roles from onshore to offshore.`},
     {name:'Grade / Level Creep Management', value:costGradeCreep, desc:`Containing creep for ${gradeCreepManagers.toLocaleString()} managers over a 3-month period.`},
     {name:'Reduced Attrition', value:costAttrition, desc:`${(attritionReductionPct*100).toFixed(0)}% reduction of ${Math.round(attritionHeads).toLocaleString()} attrition heads, saving on ${symbol}${Math.round(recruitmentCost).toLocaleString()} recruitment cost per hire.`},
     {name:'Alumni Rehire Savings', value:costAlumni, desc:`${(alumniSavingsPct*100).toFixed(0)}% savings on hiring & training costs for returning alumni.`},
-    {name:'Automated CV / Bio Generation', value:costCVAutomation, desc:`${numBios.toLocaleString()} bios/CVs, saving ${cvMinutesSaved} minutes each at a ${symbol}${hourlyRate}/hr blended rate.`}
+    {name:'Automated CV / Bio Generation', value:costCVAutomation, desc:`${numBios.toLocaleString()} bios/CVs, saving ${cvMinutesSaved} minutes each at a ${symbol}${hourlyRate}/hr blended rate.`},
+    {name:'Bid Response Efficiency', value:costBidResponse, desc:`${annualRFPs.toLocaleString()} RFPs/year at ${avgHoursPerRFP}hrs each, saving ${(bidTimeSavedPct*100).toFixed(0)}% of time via CV accessibility, Bulk CV Export & Export Wizard, at ${symbol}${hourlyRate}/hr — frees bid teams to pursue higher RFP volumes.`}
   ];
 
   renderTable('revenueTable', revenueDrivers, revenueTotal, symbol, 'rev', 'Revenue Increase Total');
