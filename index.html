@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROI Calculator</title>
+<style>
+  :root{
+    --navy:#0b2545;
+    --blue:#1f6feb;
+    --teal:#0aa3a3;
+    --green:#1c8a5a;
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --border:#e2e6ed;
+    --text:#1a2333;
+    --muted:#5b6577;
+    --danger:#c0392b;
+    --radius:10px;
+    --shadow:0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.45;
+  }
+  header{
+    background:linear-gradient(135deg,var(--navy),#123a6b 60%, var(--teal));
+    color:#fff;
+    padding:28px 32px;
+  }
+  header h1{margin:0 0 4px 0; font-size:1.6rem;}
+  header p{margin:0; opacity:.85; font-size:.95rem; max-width:760px;}
+  .header-row{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;}
+  .presets{display:flex; gap:8px; flex-wrap:wrap;}
+  .btn{
+    border:1px solid rgba(255,255,255,.5);
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:.85rem;
+    cursor:pointer;
+    transition:.15s;
+    white-space:nowrap;
+  }
+  .btn:hover{background:rgba(255,255,255,.22);}
+  .btn.primary{background:#fff; color:var(--navy); border-color:#fff; font-weight:600;}
+  .btn.primary:hover{background:#e8edf5;}
+  .btn.ghost{background:transparent;}
+
+  .layout{
+    display:grid;
+    grid-template-columns: minmax(360px, 1fr) minmax(380px, 1fr);
+    gap:24px;
+    padding:24px 32px 60px;
+    max-width:1500px;
+    margin:0 auto;
+    align-items:start;
+  }
+  @media (max-width: 980px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:18px 20px;
+    margin-bottom:18px;
+  }
+  .card h2{
+    font-size:1rem;
+    margin:0 0 4px 0;
+    color:var(--navy);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card .sub{color:var(--muted); font-size:.8rem; margin:0 0 14px 0;}
+  .field{margin-bottom:12px;}
+  .field label{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:.83rem;
+    font-weight:600;
+    color:#33405a;
+    margin-bottom:4px;
+  }
+  .field label .hint{font-weight:400; color:var(--muted); font-size:.72rem;}
+  .field .desc{font-size:.72rem; color:var(--muted); margin:2px 0 0 0;}
+  .input-wrap{position:relative; display:flex; align-items:center;}
+  .input-wrap .prefix, .input-wrap .suffix{
+    position:absolute; color:var(--muted); font-size:.85rem; pointer-events:none;
+  }
+  .input-wrap .prefix{left:10px;}
+  .input-wrap .suffix{right:10px;}
+  input[type=number], input[type=text], select{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    font-size:.9rem;
+    background:#fbfcfe;
+    color:var(--text);
+    transition:.15s;
+  }
+  input.has-prefix{padding-left:24px;}
+  input.has-suffix{padding-right:28px;}
+  input:focus, select:focus{
+    outline:none;
+    border-color:var(--blue);
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(31,111,235,.12);
+  }
+  input[type=checkbox]{width:16px; height:16px;}
+  .checkbox-row{display:flex; align-items:center; gap:8px; font-size:.85rem; font-weight:600; color:#33405a;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  details{margin-bottom:0;}
+  details summary{
+    cursor:pointer;
+    font-size:.95rem;
+    font-weight:700;
+    color:var(--navy);
+    padding:2px 0 10px 0;
+    list-style:none;
+  }
+  details summary::-webkit-details-marker{display:none;}
+  details summary::before{content:"▸ "; color:var(--blue);}
+  details[open] summary::before{content:"▾ "; color:var(--blue);}
+
+  /* Results side */
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .kpi{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px 18px;
+  }
+  .kpi .label{font-size:.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.03em;}
+  .kpi .value{font-size:1.5rem; font-weight:700; color:var(--navy); margin-top:4px;}
+  .kpi.total{
+    grid-column:1 / -1;
+    background:linear-gradient(135deg,var(--navy),#0f3a63);
+    color:#fff;
+    border:none;
+  }
+  .kpi.total .label{color:#cfe0f5;}
+  .kpi.total .value{color:#fff; font-size:2.1rem;}
+  .kpi.total .subvalue{color:#cfe0f5; font-size:.85rem; margin-top:6px;}
+
+  table.breakdown{width:100%; border-collapse:collapse; font-size:.83rem;}
+  table.breakdown th{
+    text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--muted); padding:6px 8px; border-bottom:2px solid var(--border);
+  }
+  table.breakdown td{padding:8px; border-bottom:1px solid var(--border); vertical-align:top;}
+  table.breakdown tr:last-child td{border-bottom:none;}
+  table.breakdown td.amount{text-align:right; font-weight:700; color:var(--navy); white-space:nowrap;}
+  table.breakdown td.name{font-weight:600;}
+  table.breakdown td.desc{color:var(--muted); font-size:.78rem;}
+  .bar-track{background:#eef1f6; border-radius:5px; height:6px; margin-top:6px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:5px;}
+  .bar-fill.rev{background:var(--teal);}
+  .bar-fill.cost{background:var(--blue);}
+
+  .section-total-row td{font-weight:800; border-top:2px solid var(--border); background:#fafbfd;}
+
+  .footnote{font-size:.72rem; color:var(--muted); margin-top:10px;}
+
+  .roi-box{
+    display:flex; gap:14px; flex-wrap:wrap; margin-top:6px;
+  }
+  .roi-box .roi-item{flex:1; min-width:140px;}
+  .roi-box .roi-item .value{font-size:1.2rem; font-weight:700; color:var(--navy);}
+  .roi-box .roi-item .label{font-size:.72rem; color:var(--muted); text-transform:uppercase;}
+
+  @media print{
+    header .presets, .no-print{display:none !important;}
+    .layout{grid-template-columns:1fr; padding:0 10px;}
+    body{background:#fff;}
+    .card, .kpi{box-shadow:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div>
+      <h1 id="calcTitle">ROI Calculator</h1>
+      <p>Adjust the inputs on the left to model the financial impact for any client — every figure on the right recalculates instantly.</p>
+    </div>
+    <div class="presets no-print">
+      <button class="btn primary" onclick="loadPreset('big4')">Big 4 Case Study</button>
+      <button class="btn primary" onclick="loadPreset('tech')">Technology Consultancy Case Study</button>
+      <button class="btn" onclick="loadPreset('blank')">Start Blank</button>
+      <button class="btn ghost" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ============ INPUTS ============ -->
+  <div id="inputs">
+
+    <div class="card">
+      <h2>🏢 Client &amp; Business Profile</h2>
+      <p class="sub">Basic details used to scale every calculation below.</p>
+      <div class="field">
+        <label>Client / Company Name</label>
+        <input type="text" id="clientName" value="" placeholder="e.g. Acme Consulting">
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Currency</label>
+          <select id="currency">
+            <option value="£">£ GBP</option>
+            <option value="$">$ USD</option>
+            <option value="€">€ EUR</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Annual Revenue</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="revenue" min="0" step="1000">
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Workforce Size <span class="hint">heads</span></label>
+          <input type="number" id="workforceSize" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Average Utilisation % <span class="hint">baseline</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="utilisation" min="0" max="100" step="0.1">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Average Salary of Workforce Members <span class="hint">used in bench savings</span></label>
+        <div class="input-wrap">
+          <span class="prefix currency-symbol">£</span>
+          <input class="has-prefix" type="number" id="avgSalary" min="0" step="500">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>👥 Resource Management (RM) Team</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Total Number of RMs</label>
+          <input type="number" id="totalRMs" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Average Salary of RMs</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="avgRMSalary" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>RM Efficiency Gain <span class="hint">sensitivity</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="rmEfficiencyPct" min="0" max="100" step="0.5">
+          <span class="suffix">%</span>
+        </div>
+        <p class="desc">Time RMs save day-to-day, freeing capacity or slowing team growth.</p>
+      </div>
+      <hr style="border:none;border-top:1px dashed var(--border); margin:14px 0;">
+      <p class="sub" style="margin-bottom:8px;"><strong>Audit businesses only</strong> — leave at 0 if not applicable.</p>
+      <div class="grid-2">
+        <div class="field">
+          <label>Number of Audit RMs</label>
+          <input type="number" id="auditRMs" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Months on Annual Planning</label>
+          <input type="number" id="monthsAnnualPlanning" min="0" step="0.5">
+        </div>
+      </div>
+      <div class="field">
+        <label>Automate Annual Planning — Time Saved <span class="hint">sensitivity</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="annualPlanningTimeSavedPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📈 Engagements, Bench &amp; Attrition</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Engagements &gt; 3 Months / Year</label>
+          <input type="number" id="engagements3mo" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Average Recruitment Cost / Hire</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="recruitmentCost" min="0" step="100">
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Average Bench % <span class="hint">baseline</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="benchPct" min="0" max="100" step="0.5">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Average Attrition % <span class="hint">baseline</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="attritionPct" min="0" max="100" step="0.5">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Bench Reduction <span class="hint">via reverse-match</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="benchReductionPct" min="0" max="100" step="1">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Attrition Reduction <span class="hint">via engagement</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="attritionReductionPct" min="0" max="100" step="1">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🧑‍💼 Contractors</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Number of Contractors / Year</label>
+          <input type="number" id="numContractors" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Average Contractor Day Rate</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="contractorDayRate" min="0" step="10">
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Average Contractor Tenure <span class="hint">months</span></label>
+          <input type="number" id="contractorTenureMonths" min="0" step="0.5">
+        </div>
+        <div class="field">
+          <label>Working Days / Month</label>
+          <input type="number" id="workingDaysPerMonth" min="1" step="1">
+        </div>
+      </div>
+      <div class="field">
+        <label>Reduce Contractor Requests By <span class="hint">sensitivity</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="contractorReductionPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🌍 Graduate &amp; Grade Mix</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Offshore Graduate Avg. Cost</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="offshoreGradCost" min="0" step="500">
+          </div>
+        </div>
+        <div class="field">
+          <label>Onshore Graduate Avg. Cost</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="onshoreGradCost" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Grads per &gt;3mo Engagement</label>
+          <input type="number" id="avgGradPerEngagement" min="0" step="1">
+        </div>
+        <div class="field">
+          <label>Increase Offshore Mix By <span class="hint">sensitivity</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="offshoreMixPct" min="0" max="100" step="1">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Average Senior Manager Salary</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="seniorManagerSalary" min="0" step="500">
+          </div>
+        </div>
+        <div class="field">
+          <label>Average Manager Salary</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="managerSalary" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Grade Creep — Managers Contained <span class="hint">sensitivity, heads</span></label>
+        <input type="number" id="gradeCreepManagers" min="0" step="1">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🎓 Hiring, Alumni &amp; CV Automation</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Average Hires / Year</label>
+          <input type="number" id="avgHiresPerYear" min="0" step="10">
+        </div>
+        <div class="field">
+          <label>Training &amp; HR Cost / New Joiner</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="trainingHRCost" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Alumni Rehire Savings <span class="hint">sensitivity</span></label>
+        <div class="input-wrap">
+          <input class="has-suffix" type="number" id="alumniSavingsPct" min="0" max="100" step="1">
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px dashed var(--border); margin:14px 0;">
+      <div class="grid-2">
+        <div class="field">
+          <label>Bios/CVs Created / Year</label>
+          <input type="number" id="numBios" min="0" step="10">
+        </div>
+        <div class="field">
+          <label>Minutes Saved / Bio <span class="hint">sensitivity</span></label>
+          <input type="number" id="cvMinutesSaved" min="0" step="1">
+        </div>
+      </div>
+      <div class="field">
+        <label>Blended Hourly Rate <span class="hint">for time saved</span></label>
+        <div class="input-wrap">
+          <span class="prefix currency-symbol">£</span>
+          <input class="has-prefix" type="number" id="hourlyRate" min="0" step="5">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Additional Revenue Opportunities</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Utilisation Improvement <span class="hint">sensitivity</span></label>
+          <div class="input-wrap">
+            <input class="has-suffix" type="number" id="utilisationImprovementPct" min="0" max="100" step="0.5">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Value of Winning Bids Supported</label>
+          <div class="input-wrap">
+            <span class="prefix currency-symbol">£</span>
+            <input class="has-prefix" type="number" id="winningBidsValue" min="0" step="1000">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💰 Investment (optional)</h2>
+      <p class="sub">Add an estimated annual cost to turn this into a true ROI multiple &amp; payback period.</p>
+      <div class="field">
+        <label>Estimated Annual Investment Cost</label>
+        <div class="input-wrap">
+          <span class="prefix currency-symbol">£</span>
+          <input class="has-prefix" type="number" id="investmentCost" min="0" step="1000" placeholder="0">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ RESULTS ============ -->
+  <div id="results" style="position:sticky; top:16px;">
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">Revenue Increase</div>
+        <div class="value" id="kpiRevenue">£0</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Cost Savings</div>
+        <div class="value" id="kpiCost">£0</div>
+      </div>
+      <div class="kpi total">
+        <div class="label">Grand Total Annual Value</div>
+        <div class="value" id="kpiTotal">£0</div>
+        <div class="subvalue" id="kpiPct">0% of current revenue</div>
+        <div class="roi-box" id="roiBox" style="display:none;">
+          <div class="roi-item">
+            <div class="value" id="roiMultiple">–</div>
+            <div class="label">ROI Multiple</div>
+          </div>
+          <div class="roi-item">
+            <div class="value" id="roiPayback">–</div>
+            <div class="label">Payback Period</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <details open>
+        <summary>Revenue Increase Drivers</summary>
+        <table class="breakdown" id="revenueTable">
+          <thead><tr><th>Driver</th><th style="text-align:right;">Annual Value</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </details>
+    </div>
+
+    <div class="card">
+      <details open>
+        <summary>Cost Savings Drivers</summary>
+        <table class="breakdown" id="costTable">
+          <thead><tr><th>Driver</th><th style="text-align:right;">Annual Value</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </details>
+    </div>
+
+    <p class="footnote">This calculator mirrors the formulas from the original Big 4 &amp; Technology Consultancy ROI case studies. All figures are illustrative planning estimates based on the assumptions entered — validate with client-specific data before presenting externally.</p>
+  </div>
+
+</div>
+
+<script>
+const ids = [
+  'clientName','currency','revenue','workforceSize','utilisation','avgSalary',
+  'totalRMs','avgRMSalary','rmEfficiencyPct','auditRMs','monthsAnnualPlanning','annualPlanningTimeSavedPct',
+  'engagements3mo','recruitmentCost','benchPct','attritionPct','benchReductionPct','attritionReductionPct',
+  'numContractors','contractorDayRate','contractorTenureMonths','workingDaysPerMonth','contractorReductionPct',
+  'offshoreGradCost','onshoreGradCost','avgGradPerEngagement','offshoreMixPct','seniorManagerSalary','managerSalary','gradeCreepManagers',
+  'avgHiresPerYear','trainingHRCost','alumniSavingsPct','numBios','cvMinutesSaved','hourlyRate',
+  'utilisationImprovementPct','winningBidsValue','investmentCost'
+];
+
+const PRESETS = {
+  big4: {
+    clientName:'Big 4 Case Study', currency:'£', revenue:2900000000, workforceSize:25000, utilisation:68, avgSalary:125000,
+    totalRMs:140, avgRMSalary:65000, rmEfficiencyPct:15, auditRMs:60, monthsAnnualPlanning:5, annualPlanningTimeSavedPct:60,
+    engagements3mo:2800, recruitmentCost:7000, benchPct:16, attritionPct:15, benchReductionPct:25, attritionReductionPct:25,
+    numContractors:1250, contractorDayRate:750, contractorTenureMonths:3, workingDaysPerMonth:20, contractorReductionPct:10,
+    offshoreGradCost:10000, onshoreGradCost:30000, avgGradPerEngagement:2, offshoreMixPct:10, seniorManagerSalary:110000, managerSalary:85000, gradeCreepManagers:150,
+    avgHiresPerYear:1500, trainingHRCost:25000, alumniSavingsPct:10, numBios:12000, cvMinutesSaved:30, hourlyRate:100,
+    utilisationImprovementPct:1, winningBidsValue:500000, investmentCost:0
+  },
+  tech: {
+    clientName:'Technology Consultancy Case Study', currency:'$', revenue:760000000, workforceSize:10000, utilisation:70, avgSalary:80000,
+    totalRMs:40, avgRMSalary:65000, rmEfficiencyPct:30, auditRMs:0, monthsAnnualPlanning:0, annualPlanningTimeSavedPct:60,
+    engagements3mo:3000, recruitmentCost:7000, benchPct:18, attritionPct:14, benchReductionPct:25, attritionReductionPct:25,
+    numContractors:750, contractorDayRate:750, contractorTenureMonths:3, workingDaysPerMonth:20, contractorReductionPct:10,
+    offshoreGradCost:10000, onshoreGradCost:30000, avgGradPerEngagement:2, offshoreMixPct:10, seniorManagerSalary:95000, managerSalary:65000, gradeCreepManagers:100,
+    avgHiresPerYear:600, trainingHRCost:25000, alumniSavingsPct:10, numBios:3000, cvMinutesSaved:30, hourlyRate:100,
+    utilisationImprovementPct:1, winningBidsValue:500000, investmentCost:0
+  },
+  blank: {
+    clientName:'', currency:'£', revenue:0, workforceSize:0, utilisation:0, avgSalary:0,
+    totalRMs:0, avgRMSalary:0, rmEfficiencyPct:0, auditRMs:0, monthsAnnualPlanning:0, annualPlanningTimeSavedPct:0,
+    engagements3mo:0, recruitmentCost:0, benchPct:0, attritionPct:0, benchReductionPct:0, attritionReductionPct:0,
+    numContractors:0, contractorDayRate:0, contractorTenureMonths:0, workingDaysPerMonth:20, contractorReductionPct:0,
+    offshoreGradCost:0, onshoreGradCost:0, avgGradPerEngagement:0, offshoreMixPct:0, seniorManagerSalary:0, managerSalary:0, gradeCreepManagers:0,
+    avgHiresPerYear:0, trainingHRCost:0, alumniSavingsPct:0, numBios:0, cvMinutesSaved:0, hourlyRate:100,
+    utilisationImprovementPct:0, winningBidsValue:0, investmentCost:0
+  }
+};
+
+function loadPreset(name){
+  const p = PRESETS[name];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (p[id] !== undefined) el.value = p[id];
+  });
+  calculate();
+}
+
+function num(id){
+  const el = document.getElementById(id);
+  const v = parseFloat(el.value);
+  return isNaN(v) ? 0 : v;
+}
+function pct(id){ return num(id) / 100; }
+
+function fmtMoney(v, symbol){
+  const rounded = Math.round(v);
+  return symbol + rounded.toLocaleString('en-GB');
+}
+function fmtPct(v){
+  return (v*100).toFixed(2) + '%';
+}
+
+function calculate(){
+  const symbol = document.getElementById('currency').value;
+  document.querySelectorAll('.currency-symbol').forEach(el => el.textContent = symbol);
+
+  const clientName = document.getElementById('clientName').value.trim();
+  document.getElementById('calcTitle').textContent = clientName ? `ROI Calculator — ${clientName}` : 'ROI Calculator';
+
+  // Inputs
+  const revenue = num('revenue');
+  const workforceSize = num('workforceSize');
+  const utilisation = pct('utilisation');
+  const avgSalary = num('avgSalary');
+
+  const totalRMs = num('totalRMs');
+  const avgRMSalary = num('avgRMSalary');
+  const rmEfficiencyPct = pct('rmEfficiencyPct');
+  const auditRMs = num('auditRMs');
+  const monthsAnnualPlanning = num('monthsAnnualPlanning');
+  const annualPlanningTimeSavedPct = pct('annualPlanningTimeSavedPct');
+
+  const engagements3mo = num('engagements3mo');
+  const recruitmentCost = num('recruitmentCost');
+  const benchPct = pct('benchPct');
+  const attritionPct = pct('attritionPct');
+  const benchReductionPct = pct('benchReductionPct');
+  const attritionReductionPct = pct('attritionReductionPct');
+
+  const numContractors = num('numContractors');
+  const contractorDayRate = num('contractorDayRate');
+  const contractorTenureMonths = num('contractorTenureMonths');
+  const workingDaysPerMonth = num('workingDaysPerMonth');
+  const contractorReductionPct = pct('contractorReductionPct');
+
+  const offshoreGradCost = num('offshoreGradCost');
+  const onshoreGradCost = num('onshoreGradCost');
+  const avgGradPerEngagement = num('avgGradPerEngagement');
+  const offshoreMixPct = pct('offshoreMixPct');
+  const seniorManagerSalary = num('seniorManagerSalary');
+  const managerSalary = num('managerSalary');
+  const gradeCreepManagers = num('gradeCreepManagers');
+
+  const avgHiresPerYear = num('avgHiresPerYear');
+  const trainingHRCost = num('trainingHRCost');
+  const alumniSavingsPct = pct('alumniSavingsPct');
+  const numBios = num('numBios');
+  const cvMinutesSaved = num('cvMinutesSaved');
+  const hourlyRate = num('hourlyRate');
+
+  const utilisationImprovementPct = pct('utilisationImprovementPct');
+  const winningBidsValue = num('winningBidsValue');
+  const investmentCost = num('investmentCost');
+
+  // Calcs (mirrors D-column formulas from the source workbook)
+  const rmTeamCost = totalRMs * avgRMSalary;                          // D6
+  const auditRMTeamCost = auditRMs * avgRMSalary;                     // D7
+  const benchHeads = workforceSize * benchPct;                        // D11
+  const attritionHeads = workforceSize * attritionPct;                // D12
+  const contractorTenureDays = contractorTenureMonths * workingDaysPerMonth; // D16
+  const totalGradResources = engagements3mo * avgGradPerEngagement;   // D19
+  const offshoreEquivCost = offshoreGradCost * offshoreMixPct * totalGradResources; // D17
+  const onshoreEquivCost = onshoreGradCost * offshoreMixPct * totalGradResources;   // D18
+  const seniorMgr3moSalary = seniorManagerSalary / 4;                 // D20
+  const mgr3moSalary = managerSalary / 4;                             // D21
+  const totalHiringTrainingCost = (avgHiresPerYear * trainingHRCost) + recruitmentCost; // D23
+
+  // Revenue increase drivers
+  const revUtilisation = revenue * utilisationImprovementPct * utilisation;      // D27
+  const revBenchMgmt = benchHeads * benchReductionPct * avgSalary;              // D28
+  const revWinningBids = winningBidsValue;                                     // D29
+  const revenueTotal = revUtilisation + revBenchMgmt + revWinningBids;         // D30
+
+  // Cost savings drivers
+  const costAnnualPlanning = auditRMTeamCost * annualPlanningTimeSavedPct / 12 * monthsAnnualPlanning; // D33
+  const costRMEfficiency = rmTeamCost * rmEfficiencyPct;                        // D34
+  const costContractorReduction = numContractors * contractorReductionPct * contractorDayRate * contractorTenureDays; // D35
+  const costOffshoreMix = onshoreEquivCost - offshoreEquivCost;                 // D36
+  const costGradeCreep = (seniorMgr3moSalary - mgr3moSalary) * gradeCreepManagers; // D37
+  const costAttrition = attritionHeads * attritionReductionPct * recruitmentCost;  // D38
+  const costAlumni = totalHiringTrainingCost * alumniSavingsPct;                // D39
+  const costCVAutomation = numBios * cvMinutesSaved / 60 * hourlyRate;          // D40
+  const costTotal = costAnnualPlanning + costRMEfficiency + costContractorReduction +
+                     costOffshoreMix + costGradeCreep + costAttrition + costAlumni + costCVAutomation; // D41
+
+  const grandTotal = revenueTotal + costTotal; // D42
+  const pctOfRevenue = revenue !== 0 ? grandTotal / revenue : 0; // D43
+
+  // KPIs
+  document.getElementById('kpiRevenue').textContent = fmtMoney(revenueTotal, symbol);
+  document.getElementById('kpiCost').textContent = fmtMoney(costTotal, symbol);
+  document.getElementById('kpiTotal').textContent = fmtMoney(grandTotal, symbol);
+  document.getElementById('kpiPct').textContent = fmtPct(pctOfRevenue) + ' of current revenue';
+
+  const roiBox = document.getElementById('roiBox');
+  if (investmentCost > 0){
+    roiBox.style.display = 'flex';
+    const multiple = grandTotal / investmentCost;
+    document.getElementById('roiMultiple').textContent = multiple.toFixed(1) + 'x';
+    const monthlyValue = grandTotal / 12;
+    const paybackMonths = monthlyValue > 0 ? investmentCost / monthlyValue : Infinity;
+    document.getElementById('roiPayback').textContent = isFinite(paybackMonths) ? paybackMonths.toFixed(1) + ' mo' : '–';
+  } else {
+    roiBox.style.display = 'none';
+  }
+
+  // Breakdown tables
+  const revenueDrivers = [
+    {name:'Improve Utilisation', value:revUtilisation, desc:`${(utilisationImprovementPct*100).toFixed(1)}% utilisation uplift on ${symbol}${Math.round(revenue).toLocaleString()} revenue, adjusted for ${(utilisation*100).toFixed(0)}% baseline utilisation.`},
+    {name:'Reverse-Match / Bench Management', value:revBenchMgmt, desc:`Reducing the ${Math.round(benchHeads).toLocaleString()}-head bench by ${(benchReductionPct*100).toFixed(0)}%, at an average salary of ${symbol}${Math.round(avgSalary).toLocaleString()}.`},
+    {name:'Supporting Winning Bids', value:revWinningBids, desc:`Estimated value of deals won with a stronger bid team.`}
+  ];
+  const costDrivers = [
+    {name:'Automate Annual Planning', value:costAnnualPlanning, desc:`${auditRMs.toLocaleString()} audit RMs saving ${(annualPlanningTimeSavedPct*100).toFixed(0)}% of time over ${monthsAnnualPlanning} months of planning (audit only).`},
+    {name:'RM Efficiencies', value:costRMEfficiency, desc:`${totalRMs.toLocaleString()} RMs achieving ${(rmEfficiencyPct*100).toFixed(0)}% efficiency gains on ${symbol}${Math.round(avgRMSalary).toLocaleString()} average salary.`},
+    {name:'Reduce Contractor Requests', value:costContractorReduction, desc:`${(contractorReductionPct*100).toFixed(0)}% reduction of ${numContractors.toLocaleString()} contractors at ${symbol}${Math.round(contractorDayRate).toLocaleString()}/day for ${contractorTenureMonths} months.`},
+    {name:'Increase Offshore Staff Mix', value:costOffshoreMix, desc:`Shifting ${(offshoreMixPct*100).toFixed(0)}% of ${Math.round(totalGradResources).toLocaleString()} graduate roles from onshore to offshore.`},
+    {name:'Grade / Level Creep Management', value:costGradeCreep, desc:`Containing creep for ${gradeCreepManagers.toLocaleString()} managers over a 3-month period.`},
+    {name:'Reduced Attrition', value:costAttrition, desc:`${(attritionReductionPct*100).toFixed(0)}% reduction of ${Math.round(attritionHeads).toLocaleString()} attrition heads, saving on ${symbol}${Math.round(recruitmentCost).toLocaleString()} recruitment cost per hire.`},
+    {name:'Alumni Rehire Savings', value:costAlumni, desc:`${(alumniSavingsPct*100).toFixed(0)}% savings on hiring & training costs for returning alumni.`},
+    {name:'Automated CV / Bio Generation', value:costCVAutomation, desc:`${numBios.toLocaleString()} bios/CVs, saving ${cvMinutesSaved} minutes each at a ${symbol}${hourlyRate}/hr blended rate.`}
+  ];
+
+  renderTable('revenueTable', revenueDrivers, revenueTotal, symbol, 'rev', 'Revenue Increase Total');
+  renderTable('costTable', costDrivers, costTotal, symbol, 'cost', 'Cost Savings Total');
+}
+
+function renderTable(tableId, drivers, total, symbol, barClass, totalLabel){
+  const tbody = document.querySelector(`#${tableId} tbody`);
+  tbody.innerHTML = '';
+  const maxVal = Math.max(...drivers.map(d => Math.abs(d.value)), 1);
+  drivers.forEach(d => {
+    const tr = document.createElement('tr');
+    const widthPct = Math.max(0, Math.min(100, (Math.abs(d.value)/maxVal)*100));
+    tr.innerHTML = `
+      <td>
+        <div class="name">${d.name}</div>
+        <div class="desc">${d.desc}</div>
+        <div class="bar-track"><div class="bar-fill ${barClass}" style="width:${widthPct}%"></div></div>
+      </td>
+      <td class="amount">${fmtMoney(d.value, symbol)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  const totalRow = document.createElement('tr');
+  totalRow.classList.add('section-total-row');
+  totalRow.innerHTML = `<td>${totalLabel}</td><td class="amount">${fmtMoney(total, symbol)}</td>`;
+  tbody.appendChild(totalRow);
+}
+
+document.getElementById('inputs').addEventListener('input', calculate);
+document.getElementById('currency').addEventListener('change', calculate);
+
+// initial load
+loadPreset('big4');
+</script>
+
+</body>
+</html>
